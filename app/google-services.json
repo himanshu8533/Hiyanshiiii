@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "792435610490",
+    "project_id": "gupshup-d32cc",
+    "storage_bucket": "gupshup-d32cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792435610490:android:342d8cee085cf76fb33cc3",
+        "android_client_info": {
+          "package_name": "com.example.gupshup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdHFcZAWnrt8p9FXREokNbJQ2IJ2Ul3-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

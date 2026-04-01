@@ -5,16 +5,15 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 
+    id("com.google.gms.google-services")
+
     kotlin("plugin.serialization") version "2.3.10"
+
 }
 
 android {
     namespace = "com.example.gupshup"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.gupshup"
@@ -53,6 +52,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,4 +70,13 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.59.2")
     ksp("androidx.hilt:hilt-compiler:1.3.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+
+
+
+    implementation ("com.google.firebase:firebase-database:22.0.1")
+
+    // Firebase PhoneAuthentication
+    implementation("com.google.firebase:firebase-auth:24.0.1")
+
+
 }
