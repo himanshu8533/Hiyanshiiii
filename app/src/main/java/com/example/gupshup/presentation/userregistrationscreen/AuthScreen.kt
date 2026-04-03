@@ -191,6 +191,8 @@ fun AuthScreen(
                             modifier = Modifier.width(70.dp),
                             singleLine = true,
                             colors = TextFieldDefaults.colors(
+                                unfocusedTextColor = Color.Black,
+                                focusedTextColor = Color.Black,
                                 unfocusedContainerColor = Color.Transparent,
                                 focusedContainerColor = Color.Transparent,
                                 focusedIndicatorColor = colorResource(R.color.Light_Sky_Blue)
@@ -205,9 +207,11 @@ fun AuthScreen(
                             placeholder = { Text("Enter phone number") },
                             singleLine = true,
                             colors = TextFieldDefaults.colors(
+                                unfocusedTextColor = Color.Black,
+                                focusedTextColor = Color.Black,
                                 unfocusedContainerColor = Color.Transparent,
                                 focusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent
+                                focusedIndicatorColor = colorResource(R.color.Light_Sky_Blue)
                             )
 
                         )
@@ -262,6 +266,8 @@ fun AuthScreen(
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
                             unfocusedContainerColor = Color.Transparent,
                             focusedContainerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent
