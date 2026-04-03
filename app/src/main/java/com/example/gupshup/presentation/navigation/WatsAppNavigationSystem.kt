@@ -8,7 +8,7 @@ import com.example.gupshup.presentation.communitiesscreen.CommunitiesScreen
 import com.example.gupshup.presentation.homescreen.HomeScreen
 import com.example.gupshup.presentation.splashscreen.SplashScreen
 import com.example.gupshup.presentation.updatescreen.UpdateScreen
-import com.example.gupshup.presentation.userregistrationscreen.UserRegistrationScreen
+import com.example.gupshup.presentation.userregistrationscreen.AuthScreen
 import com.example.gupshup.presentation.welcomescreen.WelcomeScreen
 
 @Composable
@@ -27,7 +27,7 @@ fun WatsAppNavigationSystem(){
         }
 
         composable<Routes.UserRegistrationScreen>{
-            UserRegistrationScreen()
+            AuthScreen(navController)
         }
 
         composable<Routes.HomeScreen>{

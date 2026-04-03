@@ -2,7 +2,8 @@ package com.example.gupshup.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
-sealed class Routes  {
+sealed class
+Routes  {
 
     @Serializable
     data object SplashScreen : Routes()
@@ -22,4 +23,11 @@ sealed class Routes  {
     @Serializable
     data object CommunitiesScreen : Routes()
 
+    @Serializable
+    data object CallsScreen : Routes()
+
+    @Serializable
+    data object UserProfileScreen : Routes()
+
 }
+
