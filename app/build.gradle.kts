@@ -78,5 +78,7 @@ dependencies {
     // Firebase PhoneAuthentication
     implementation("com.google.firebase:firebase-auth:24.0.1")
 
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+
 
 }

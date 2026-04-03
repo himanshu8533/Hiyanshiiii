@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gupshup.presentation.communitiesscreen.CommunitiesScreen
 import com.example.gupshup.presentation.homescreen.HomeScreen
+import com.example.gupshup.presentation.profile.userProfileSetScreen
 import com.example.gupshup.presentation.splashscreen.SplashScreen
 import com.example.gupshup.presentation.updatescreen.UpdateScreen
 import com.example.gupshup.presentation.userregistrationscreen.AuthScreen
@@ -40,6 +41,11 @@ fun WatsAppNavigationSystem(){
 
         composable<Routes.CommunitiesScreen> {
             CommunitiesScreen()
+        }
+
+        composable<Routes.UserProfileSetScreen> {
+            // Now this only requires the navController
+            userProfileSetScreen(navHostController = navController)
         }
 
 
