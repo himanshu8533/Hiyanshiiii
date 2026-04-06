@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -47,14 +46,14 @@ import com.example.gupshup.presentation.navigation.Routes
 import com.example.gupshup.presentation.viewmodels.PhoneAuthViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import org.w3c.dom.Text
+
 
 @Composable
 fun userProfileSetScreen(
     phoneAuthViewModel: PhoneAuthViewModel = hiltViewModel(),
     navHostController: NavHostController,
 
-) {
+    ) {
 
     var name by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("") }
@@ -149,15 +148,15 @@ fun userProfileSetScreen(
 
         TextField(
             value = name,
-            onValueChange = {name=it},
+            onValueChange = { name = it },
             label = {
                 Text("Name")
             },
 
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor =Color.Transparent,
-                 focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
                 focusedTextColor = Color.Black,
                 unfocusedIndicatorColor = colorResource(R.color.Blue)
             )
@@ -168,14 +167,14 @@ fun userProfileSetScreen(
 
         TextField(
             value = status,
-            onValueChange = {status=it},
+            onValueChange = { status = it },
             label = {
                 Text("Status")
             },
 
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor =Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 focusedTextColor = Color.Black,
                 unfocusedIndicatorColor = colorResource(R.color.Blue)
@@ -186,7 +185,7 @@ fun userProfileSetScreen(
 
         Button(onClick = {
 
-            phoneAuthViewModel.saveUserProfile(userId,name,status,bitmapImage)
+            phoneAuthViewModel.saveUserProfile(userId, name, status, bitmapImage)
             navHostController.navigate(Routes.HomeScreen)
         }, colors = ButtonDefaults.buttonColors(colorResource(R.color.Royal_Blue))) {
 

@@ -34,12 +34,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.gupshup.R
 import com.example.gupshup.presentation.bottomnavigation.BottomNavigation
+import com.example.gupshup.presentation.navigation.Routes
 
 @Composable
-@Preview(showSystemUi = true)
-fun CommunitiesScreen() {
+fun CommunitiesScreen(navHostController: NavHostController) {
 
     var isSearching by remember {
         mutableStateOf(false)
@@ -141,7 +142,35 @@ fun CommunitiesScreen() {
             }
         }
     }, bottomBar = {
-        BottomNavigation()
+        BottomNavigation(
+            navHostController,
+            selectedItem = 0,
+            unSelectedItem = Color.Gray,
+            onClick = { index ->
+
+                when (index) {
+                    0 -> {
+                        navHostController.navigate(Routes.HomeScreen)
+                    }
+
+                    1 -> {
+                        navHostController.navigate(Routes.UpdateScreen)
+                    }
+
+                    2 -> {
+                        navHostController.navigate(Routes.ReelScreen)
+                    }
+
+                    3 -> {
+                        navHostController.navigate(Routes.CommunitiesScreen)
+                    }
+
+                    4 -> {
+                        navHostController.navigate(Routes.CallsScreen)
+                    }
+
+                }
+            })
     }) {
 
         Column(modifier = Modifier.padding(it)) {

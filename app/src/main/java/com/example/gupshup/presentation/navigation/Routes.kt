@@ -28,6 +28,17 @@ Routes  {
 
     @Serializable
     data object UserProfileSetScreen : Routes()
+    @Serializable
+    data object SettingsScreen : Routes()
 
+    @Serializable
+    data object ChatScreen : Routes(){
+        const val route ="chat_screen/{phoneNumber}"
+        fun createRoutes(phoneNumber: String) = "chat_screen/$phoneNumber"
+    }
+
+    @Serializable
+    data object ReelScreen : Routes()
 }
+
 
