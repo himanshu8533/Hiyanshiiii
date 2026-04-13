@@ -30,11 +30,11 @@ fun BottomNavigation(
 ) {
 
     val items = listOf(
-        NavigationItem("Chats", R.drawable.add_chat_icon, R.drawable.message_m),
-        NavigationItem("Updates", R.drawable.add_chat_icon, R.drawable.message_m),
-        NavigationItem("Reels", R.drawable.reelss, R.drawable.reelss),
-        NavigationItem("Communities", R.drawable.add_chat_icon, R.drawable.message_m),
-        NavigationItem("Calls", R.drawable.add_chat_icon, R.drawable.message_m)
+        NavigationItem("Chats", R.drawable.chat, R.drawable.chat),
+        NavigationItem("Updates", R.drawable.updates, R.drawable.updates),
+        NavigationItem("Reels", R.drawable.reels, R.drawable.reels),
+        NavigationItem("Communities", R.drawable.communities, R.drawable.communities),
+        NavigationItem("Calls", R.drawable.calling, R.drawable.calling)
 
 
     )

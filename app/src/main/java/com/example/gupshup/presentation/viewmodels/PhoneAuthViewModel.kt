@@ -187,6 +187,7 @@ class PhoneAuthViewModel @Inject constructor(
         firebaseAuth.signOut()
         val sharedPreference = activity.getSharedPreferences("app_prefs", Activity.MODE_PRIVATE)
         sharedPreference.edit().putBoolean("isSigned", false).apply()
+        
     }
 
 
