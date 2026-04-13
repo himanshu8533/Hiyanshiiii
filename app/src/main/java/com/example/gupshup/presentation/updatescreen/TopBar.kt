@@ -45,7 +45,7 @@ fun TopBar() {
     }
 
     var showMenu by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
     HorizontalDivider()

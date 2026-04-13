@@ -56,6 +56,34 @@ fun WatsAppNavigationSystem(){
             userProfileSetScreen(navHostController = navController)
         }
 
+        composable<Routes.SettingsScreen> {
+            com.example.gupshup.presentation.settings.SettingsScreen(navController = navController)
+        }
+
+        composable<Routes.AccountSettingsScreen> {
+            com.example.gupshup.presentation.settings.AccountSettingsScreen(navController = navController)
+        }
+
+        composable<Routes.PrivacySettingsScreen> {
+            com.example.gupshup.presentation.settings.PrivacySettingsScreen(navController = navController)
+        }
+
+        composable<Routes.ProfileScreen> {
+            com.example.gupshup.presentation.settings.ProfileScreen(navController = navController)
+        }
+
+        composable<Routes.ChangePhoneNumberScreen> {
+            com.example.gupshup.presentation.settings.ChangePhoneNumberScreen(navController = navController)
+        }
+
+        composable<Routes.EmailAddressScreen> {
+            com.example.gupshup.presentation.settings.EmailAddressScreen(navController = navController)
+        }
+
+        composable<Routes.ReelScreen> {
+            com.example.gupshup.presentation.reelscreen.ReelScreen(navHostController = navController)
+        }
+
 
     }
 

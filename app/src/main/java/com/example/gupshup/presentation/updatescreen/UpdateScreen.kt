@@ -92,7 +92,7 @@ fun UpdateScreen(navHostController: NavHostController) {
 
             BottomNavigation(
                 navHostController,
-                selectedItem = 0,
+                selectedItem = 1,
                 unSelectedItem = Color.Gray,
                 onClick = { index ->
 
@@ -102,7 +102,7 @@ fun UpdateScreen(navHostController: NavHostController) {
                         }
 
                         1 -> {
-                            navHostController.navigate(Routes.UpdateScreen)
+                            // Already on UpdateScreen
                         }
 
                         2 -> {

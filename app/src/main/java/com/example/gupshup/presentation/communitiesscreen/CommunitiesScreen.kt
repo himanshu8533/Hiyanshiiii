@@ -144,7 +144,7 @@ fun CommunitiesScreen(navHostController: NavHostController) {
     }, bottomBar = {
         BottomNavigation(
             navHostController,
-            selectedItem = 0,
+            selectedItem = 3,
             unSelectedItem = Color.Gray,
             onClick = { index ->
 
@@ -162,7 +162,7 @@ fun CommunitiesScreen(navHostController: NavHostController) {
                     }
 
                     3 -> {
-                        navHostController.navigate(Routes.CommunitiesScreen)
+                        // Already on CommunitiesScreen
                     }
 
                     4 -> {

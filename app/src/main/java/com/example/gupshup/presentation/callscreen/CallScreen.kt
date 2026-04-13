@@ -148,7 +148,7 @@ fun CallScreen(navHostController: NavHostController) {
         bottomBar = {
             BottomNavigation(
                 navHostController,
-                selectedItem = 0,
+                selectedItem = 4,
                 unSelectedItem = Color.Gray,
                 onClick = { index ->
 
@@ -170,7 +170,7 @@ fun CallScreen(navHostController: NavHostController) {
                         }
 
                         4 -> {
-                            navHostController.navigate(Routes.CallsScreen)
+                            // Already on CallsScreen
                         }
 
                     }

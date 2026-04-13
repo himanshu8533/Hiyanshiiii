@@ -98,7 +98,7 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
 
                 when (index) {
                     0 -> {
-                        navHostController.navigate(Routes.HomeScreen)
+                        // Already on HomeScreen
                     }
 
                     1 -> {
@@ -223,29 +223,38 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                             }, modifier = Modifier.background(color = Color.White)) {
 
                                 DropdownMenuItem(
-                                    text = { Text("New Group") },
+                                    text = { Text("New group") },
                                     onClick = { showMenu = false })
 
                                 DropdownMenuItem(
-                                    text = { Text("New Broadcast") },
+                                    text = { Text("New community") },
                                     onClick = { showMenu = false })
 
                                 DropdownMenuItem(
-                                    text = { Text("Linked Devices") },
+                                    text = { Text("Broadcast lists") },
                                     onClick = { showMenu = false })
 
                                 DropdownMenuItem(
-                                    text = { Text("Starred Messages") },
+                                    text = { Text("Linked devices") },
                                     onClick = { showMenu = false })
 
                                 DropdownMenuItem(
-                                    text = { Text("Read All") },
+                                    text = { Text("Starred") },
                                     onClick = { showMenu = false })
+
+                                DropdownMenuItem(
+                                    text = { Text("Payments") },
+                                    onClick = { showMenu = false })
+
+                                DropdownMenuItem(
+                                    text = { Text("Read all") },
+                                    onClick = { showMenu = false },
+                                    enabled = true)
 
                                 DropdownMenuItem(text = { Text("Settings") }, onClick = {
                                     showMenu = false
                                     navHostController.navigate(Routes.SettingsScreen)
-                                })
+                                }, enabled = true)
 
                             }
                         }

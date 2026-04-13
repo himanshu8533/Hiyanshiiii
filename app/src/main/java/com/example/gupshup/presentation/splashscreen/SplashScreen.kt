@@ -28,10 +28,18 @@ fun SplashScreen(navHostController: NavHostController){
 
         delay(1500)
 
-        navHostController.navigate(Routes.WelcomeScreen){
-
-            popUpTo<Routes.SplashScreen>{
-                inclusive = true
+        val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            navHostController.navigate(Routes.HomeScreen) {
+                popUpTo<Routes.SplashScreen> {
+                    inclusive = true
+                }
+            }
+        } else {
+            navHostController.navigate(Routes.WelcomeScreen) {
+                popUpTo<Routes.SplashScreen> {
+                    inclusive = true
+                }
             }
         }
     }
