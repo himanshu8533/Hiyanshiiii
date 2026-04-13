@@ -54,6 +54,9 @@ Routes  {
 
     @Serializable
     data object ReelScreen : Routes()
+
+    @Serializable
+    data object ChatThemeScreen : Routes()
 }
 
 

@@ -74,7 +74,7 @@ fun CallItemDesign(call: Call) {
             IconButton(onClick = {}, modifier = Modifier.align(Alignment.CenterEnd)) {
 
                 Icon(
-                    painter = painterResource(R.drawable.camera),
+                    painter = painterResource(R.drawable.message_m),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

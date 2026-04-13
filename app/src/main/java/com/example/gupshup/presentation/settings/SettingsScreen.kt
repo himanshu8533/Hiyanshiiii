@@ -1,5 +1,6 @@
 package com.example.gupshup.presentation.settings
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,24 +16,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
 import com.example.gupshup.presentation.navigation.Routes
+import com.example.gupshup.presentation.viewmodels.BaseViewModel
+import com.example.gupshup.presentation.viewmodels.PhoneAuthViewModel
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavHostController) {
+fun SettingsScreen(navController: NavHostController, viewModel: BaseViewModel = hiltViewModel()) {
     val currentUser = FirebaseAuth.getInstance().currentUser
-    val profileName = currentUser?.displayName ?: "User Name"
-    val profileStatus = "Hey there! I am using GupShup."
+    var profileName by remember { mutableStateOf("User Name") }
+    var profileStatus by remember { mutableStateOf("Hey there! I am using GupShup.") }
+    var profileImageBase64 by remember { mutableStateOf<String?>(null) }
 
+    LaunchedEffect(currentUser?.uid) {
+        currentUser?.uid?.let { uid ->
+            FirebaseDatabase.getInstance().getReference("users").child(uid).get()
+                .addOnSuccessListener { snapshot ->
+                    profileName = snapshot.child("name").value as? String ?: "User Name"
+                    profileStatus = snapshot.child("status").value as? String ?: "Hey there! I am using GupShup."
+                    profileImageBase64 = snapshot.child("profileImage").value as? String
+                }
+        }
+    }
+
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,7 +75,7 @@ fun SettingsScreen(navController: NavHostController) {
                 .padding(padding)
         ) {
             item {
-                ProfileSection(profileName, profileStatus) {
+                ProfileSection(profileName, profileStatus, profileImageBase64, viewModel) {
                     navController.navigate(Routes.ProfileScreen)
                 }
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), thickness = 0.5.dp)
@@ -67,7 +86,7 @@ fun SettingsScreen(navController: NavHostController) {
                 SettingsItemData("Privacy", "Block contacts, disappearing messages", R.drawable.more, Routes.PrivacySettingsScreen),
                 SettingsItemData("Avatar", "Create, edit, profile photo", R.drawable.more, null),
                 SettingsItemData("Lists", "Manage people and groups", R.drawable.more, null),
-                SettingsItemData("Chats", "Theme, wallpapers, chat history", R.drawable.more, null),
+                SettingsItemData("Chats", "Theme, wallpapers, chat history", R.drawable.more, Routes.ChatThemeScreen),
                 SettingsItemData("Notifications", "Message, group & call tones", R.drawable.more, null),
                 SettingsItemData("Storage and data", "Network usage, auto-download", R.drawable.more, null),
                 SettingsItemData("App language", "English (device's language)", R.drawable.more, null),
@@ -77,7 +96,17 @@ fun SettingsScreen(navController: NavHostController) {
 
             items(settingsItems) { item ->
                 SettingsListItem(item) {
-                    item.route?.let { navController.navigate(it) }
+                    if (item.title == "Invite a friend") {
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, "Let's chat on GupShup! It's a fast, simple, and secure app we can use to message and call each other for free. Get it at https://example.com/download")
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        context.startActivity(shareIntent)
+                    } else {
+                        item.route?.let { navController.navigate(it) }
+                    }
                 }
             }
         }
@@ -85,7 +114,7 @@ fun SettingsScreen(navController: NavHostController) {
 }
 
 @Composable
-fun ProfileSection(name: String, status: String, onClick: () -> Unit) {
+fun ProfileSection(name: String, status: String, imageBase64: String?, viewModel: BaseViewModel, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,14 +122,26 @@ fun ProfileSection(name: String, status: String, onClick: () -> Unit) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.user_placeholder),
-            contentDescription = "Profile Picture",
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
+        val bitmap = imageBase64?.let { viewModel.base64ToBitmap(it) }
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.user_placeholder),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -114,6 +155,7 @@ fun ProfileSection(name: String, status: String, onClick: () -> Unit) {
         )
     }
 }
+
 
 @Composable
 fun SettingsListItem(item: SettingsItemData, onClick: () -> Unit) {

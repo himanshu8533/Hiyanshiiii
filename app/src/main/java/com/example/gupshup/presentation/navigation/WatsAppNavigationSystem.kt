@@ -84,6 +84,10 @@ fun WatsAppNavigationSystem(){
             com.example.gupshup.presentation.reelscreen.ReelScreen(navHostController = navController)
         }
 
+        composable<Routes.ChatThemeScreen> {
+            com.example.gupshup.presentation.settings.ChatThemeScreen(navController = navController)
+        }
+
 
     }
 

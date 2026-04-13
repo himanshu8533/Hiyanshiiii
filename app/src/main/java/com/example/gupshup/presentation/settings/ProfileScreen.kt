@@ -31,17 +31,41 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
+import com.example.gupshup.presentation.viewmodels.BaseViewModel
+import com.example.gupshup.presentation.viewmodels.PhoneAuthViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavHostController) {
+fun ProfileScreen(navController: NavHostController, viewModel: BaseViewModel = hiltViewModel(), authViewModel: PhoneAuthViewModel = hiltViewModel()) {
     val currentUser = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
     var bitmapImage by remember { mutableStateOf<Bitmap?>(null) }
+
+    var name by remember { mutableStateOf("User Name") }
+    var about by remember { mutableStateOf("Hey there! I am using GupShup.") }
+    var profileImageBase64 by remember { mutableStateOf<String?>(null) }
+    var showEditNameDialog by remember { mutableStateOf(false) }
+    var showEditAboutDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentUser?.uid) {
+        currentUser?.uid?.let { uid ->
+            FirebaseDatabase.getInstance().getReference("users").child(uid).get()
+                .addOnSuccessListener { snapshot ->
+                    name = snapshot.child("name").value as? String ?: "User Name"
+                    about = snapshot.child("status").value as? String ?: "Hey there! I am using GupShup."
+                    profileImageBase64 = snapshot.child("profileImage").value as? String
+                    profileImageBase64?.let {
+                        bitmapImage = viewModel.base64ToBitmap(it)
+                    }
+                }
+        }
+    }
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -55,9 +79,59 @@ fun ProfileScreen(navController: NavHostController) {
                     val source = ImageDecoder.createSource(context.contentResolver, it)
                     ImageDecoder.decodeBitmap(source)
                 }
+                // Save profile image immediately
+                currentUser?.uid?.let { uid ->
+                    authViewModel.saveUserProfile(uid, name, about, bitmapImage)
+                }
             }
         }
     )
+
+    if (showEditNameDialog) {
+        var tempName by remember { mutableStateOf(name) }
+        AlertDialog(
+            onDismissRequest = { showEditNameDialog = false },
+            title = { Text("Enter your name") },
+            text = {
+                TextField(value = tempName, onValueChange = { tempName = it })
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    name = tempName
+                    currentUser?.uid?.let { uid ->
+                        authViewModel.saveUserProfile(uid, name, about, bitmapImage)
+                    }
+                    showEditNameDialog = false
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showEditNameDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
+
+    if (showEditAboutDialog) {
+        var tempAbout by remember { mutableStateOf(about) }
+        AlertDialog(
+            onDismissRequest = { showEditAboutDialog = false },
+            title = { Text("About") },
+            text = {
+                TextField(value = tempAbout, onValueChange = { tempAbout = it })
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    about = tempAbout
+                    currentUser?.uid?.let { uid ->
+                        authViewModel.saveUserProfile(uid, name, about, bitmapImage)
+                    }
+                    showEditAboutDialog = false
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showEditAboutDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -124,8 +198,8 @@ fun ProfileScreen(navController: NavHostController) {
             ProfileInfoItem(
                 icon = Icons.Default.Person,
                 label = "Name",
-                value = currentUser?.displayName ?: "User Name",
-                onEditClick = { /* TODO */ }
+                value = name,
+                onEditClick = { showEditNameDialog = true }
             )
 
             HorizontalDivider(modifier = Modifier.padding(start = 56.dp, top = 8.dp, bottom = 8.dp))
@@ -133,8 +207,8 @@ fun ProfileScreen(navController: NavHostController) {
             ProfileInfoItem(
                 icon = Icons.Default.Info,
                 label = "About",
-                value = "Hey there! I am using GupShup.",
-                onEditClick = { /* TODO */ }
+                value = about,
+                onEditClick = { showEditAboutDialog = true }
             )
 
             HorizontalDivider(modifier = Modifier.padding(start = 56.dp, top = 8.dp, bottom = 8.dp))
@@ -148,6 +222,7 @@ fun ProfileScreen(navController: NavHostController) {
         }
     }
 }
+
 
 @Composable
 fun ProfileInfoItem(

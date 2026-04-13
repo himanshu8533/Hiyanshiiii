@@ -157,6 +157,18 @@ class PhoneAuthViewModel @Inject constructor(
 
     }
 
+    fun deleteAccount(userId: String, onComplete: (Boolean) -> Unit) {
+        val user = firebaseAuth.currentUser
+        user?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                database.reference.child("users").child(userId).removeValue()
+                onComplete(true)
+            } else {
+                onComplete(false)
+            }
+        }
+    }
+
     private fun convertBitmapToBase64(bitmap:Bitmap):String{
 
         val byteArrayOutputStream = ByteArrayOutputStream()

@@ -3,6 +3,7 @@ package com.example.gupshup.presentation.bottomnavigation
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -37,7 +38,12 @@ fun BottomNavigation(
 
 
     )
-    NavigationBar(containerColor = Color.White, modifier = Modifier.height(80.dp)) {
+    NavigationBar(
+        containerColor = Color.White,
+        modifier = Modifier
+            .navigationBarsPadding()
+            .height(80.dp)
+    ) {
 
         items.forEachIndexed { index, item ->
             NavigationBarItem(

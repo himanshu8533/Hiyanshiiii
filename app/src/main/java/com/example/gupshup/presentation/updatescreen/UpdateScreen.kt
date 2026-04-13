@@ -19,13 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
 import com.example.gupshup.presentation.bottomnavigation.BottomNavigation
 import com.example.gupshup.presentation.navigation.Routes
+import com.example.gupshup.presentation.updatescreen.TopBar
 
 
 @Composable
@@ -72,6 +72,13 @@ fun UpdateScreen(navHostController: NavHostController) {
         )
 
     Scaffold(
+        topBar = {
+            TopBar(
+                title = "Updates",
+                onSettingsClick = { navHostController.navigate(Routes.SettingsScreen) },
+                showCamera = false
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { /*TODO*/ },
@@ -79,113 +86,91 @@ fun UpdateScreen(navHostController: NavHostController) {
                 modifier = Modifier.size(65.dp),
                 contentColor = Color.White
             ) {
-
                 Icon(
                     painter = painterResource(id = R.drawable.camera222),
                     contentDescription = null,
                     modifier = Modifier.size(30.dp)
                 )
-
             }
         },
         bottomBar = {
-
             BottomNavigation(
                 navHostController,
                 selectedItem = 1,
                 unSelectedItem = Color.Gray,
                 onClick = { index ->
-
                     when (index) {
                         0 -> {
                             navHostController.navigate(Routes.HomeScreen)
                         }
-
                         1 -> {
                             // Already on UpdateScreen
                         }
-
                         2 -> {
                             navHostController.navigate(Routes.ReelScreen)
                         }
-
                         3 -> {
                             navHostController.navigate(Routes.CommunitiesScreen)
                         }
-
                         4 -> {
                             navHostController.navigate(Routes.CallsScreen)
                         }
-
                     }
-                })
-
-        },
-        topBar = {
-
-            TopBar()
-
+                }
+            )
         }
-
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(it)
+                .padding(paddingValues)
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
-        )
-        {
-            Text(
-                text = "Status",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
-            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState)
+            ) {
+                Text(
+                    text = "Status",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                )
 
-            MyStatus()
+                MyStatus()
 
-            sampleStatus.forEach { data ->
+                sampleStatus.forEach { data ->
+                    StatusItem(statusData = data)
+                }
 
-                StatusItem(statusData = data)
+                Spacer(modifier = Modifier.height(16.dp))
 
+                HorizontalDivider(color = Color.Gray)
+
+                Text(
+                    text = "Channels",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(text = "Stay updated on topics that matter to you. Find channels to follow below.")
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Text(text = "Find channels to follow")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                sampleChannel.forEach {
+                    ChannelItemDesign(channel = it)
+                }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            HorizontalDivider(
-                color = Color.Gray
-
-            )
-
-            Text(
-                text = "Channels",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-
-                Text(text = "Stay updated on topics that matter to you. Find channels to follow below.")
-
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(text = "Find channels to follow")
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            sampleChannel.forEach {
-
-                ChannelItemDesign(channel = it)
-
-            }
-
         }
-
     }
-
 }
+
