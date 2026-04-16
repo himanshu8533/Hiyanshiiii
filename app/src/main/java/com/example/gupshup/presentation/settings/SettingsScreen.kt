@@ -52,6 +52,47 @@ fun SettingsScreen(navController: NavHostController, viewModel: BaseViewModel = 
     }
 
     val context = LocalContext.current
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    val languages = listOf("English", "Hindi", "Spanish", "French", "German")
+    var selectedLanguage by remember { mutableStateOf("English") }
+
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = { Text("Select Language") },
+            text = {
+                Column {
+                    languages.forEach { language ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    selectedLanguage = language
+                                    showLanguageDialog = false
+                                }
+                                .padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (language == selectedLanguage),
+                                onClick = {
+                                    selectedLanguage = language
+                                    showLanguageDialog = false
+                                }
+                            )
+                            Text(text = language, modifier = Modifier.padding(start = 8.dp))
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,23 +130,29 @@ fun SettingsScreen(navController: NavHostController, viewModel: BaseViewModel = 
                 SettingsItemData("Chats", "Theme, wallpapers, chat history", R.drawable.more, Routes.ChatThemeScreen),
                 SettingsItemData("Notifications", "Message, group & call tones", R.drawable.more, null),
                 SettingsItemData("Storage and data", "Network usage, auto-download", R.drawable.more, null),
-                SettingsItemData("App language", "English (device's language)", R.drawable.more, null),
+                SettingsItemData("App language", selectedLanguage, R.drawable.more, null),
                 SettingsItemData("Help", "Help center, contact us, privacy policy", R.drawable.more, null),
                 SettingsItemData("Invite a friend", "", R.drawable.more, null)
             )
 
             items(settingsItems) { item ->
                 SettingsListItem(item) {
-                    if (item.title == "Invite a friend") {
-                        val sendIntent: Intent = Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, "Let's chat on GupShup! It's a fast, simple, and secure app we can use to message and call each other for free. Get it at https://example.com/download")
-                            type = "text/plain"
+                    when (item.title) {
+                        "Invite a friend" -> {
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, "Let's chat on GupShup! It's a fast, simple, and secure app we can use to message and call each other for free. Get it at https://example.com/download")
+                                type = "text/plain"
+                            }
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            context.startActivity(shareIntent)
                         }
-                        val shareIntent = Intent.createChooser(sendIntent, null)
-                        context.startActivity(shareIntent)
-                    } else {
-                        item.route?.let { navController.navigate(it) }
+                        "App language" -> {
+                            showLanguageDialog = true
+                        }
+                        else -> {
+                            item.route?.let { navController.navigate(it) }
+                        }
                     }
                 }
             }
