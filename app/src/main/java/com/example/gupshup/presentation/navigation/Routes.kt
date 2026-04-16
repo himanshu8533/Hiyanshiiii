@@ -57,6 +57,9 @@ Routes  {
 
     @Serializable
     data object ChatThemeScreen : Routes()
+
+    @Serializable
+    data object MainContainerScreen : Routes()
 }
 
 

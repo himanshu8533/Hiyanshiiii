@@ -1,5 +1,6 @@
 package com.example.gupshup.presentation.communitiesscreen
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,7 @@ import com.example.gupshup.presentation.navigation.Routes
 import com.example.gupshup.presentation.updatescreen.TopBar
 
 @Composable
-fun CommunitiesScreen(navHostController: NavHostController) {
+fun CommunitiesScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
 
     val sampleCommunities = listOf(
         Communities(image = R.drawable.dipika_rohila, name = "Dipika Rohila", memberCount = "256 members")
@@ -41,35 +42,12 @@ fun CommunitiesScreen(navHostController: NavHostController) {
                 onSettingsClick = { navHostController.navigate(Routes.SettingsScreen) },
                 showCamera = false
             )
-        },
-        bottomBar = {
-            BottomNavigation(
-                navHostController,
-                selectedItem = 3,
-                unSelectedItem = Color.Gray,
-                onClick = { index ->
-                    when (index) {
-                        0 -> {
-                            navHostController.navigate(Routes.HomeScreen)
-                        }
-                        1 -> {
-                            navHostController.navigate(Routes.UpdateScreen)
-                        }
-                        2 -> {
-                            navHostController.navigate(Routes.ReelScreen)
-                        }
-                        3 -> {
-                            // Already on CommunitiesScreen
-                        }
-                        4 -> {
-                            navHostController.navigate(Routes.CallsScreen)
-                        }
-                    }
-                }
-            )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(modifier = Modifier
+            .padding(paddingValues)
+            .padding(bottom = outerPadding.calculateBottomPadding())
+        ) {
             Button(
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Royal_Blue)),

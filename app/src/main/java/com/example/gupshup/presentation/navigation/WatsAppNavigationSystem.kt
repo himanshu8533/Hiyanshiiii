@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gupshup.presentation.callscreen.CallScreen
 import com.example.gupshup.presentation.communitiesscreen.CommunitiesScreen
 import com.example.gupshup.presentation.homescreen.HomeScreen
+import com.example.gupshup.presentation.maincontainer.MainContainerScreen
 import com.example.gupshup.presentation.profile.userProfileSetScreen
 import com.example.gupshup.presentation.splashscreen.SplashScreen
 import com.example.gupshup.presentation.updatescreen.UpdateScreen
@@ -35,19 +36,26 @@ fun WatsAppNavigationSystem(){
         }
 
         composable<Routes.HomeScreen>{
-            val baseViewModel: BaseViewModel= hiltViewModel()
-            HomeScreen(navController,baseViewModel)
+            MainContainerScreen(navController)
         }
 
         composable<Routes.UpdateScreen>{
-            UpdateScreen(navController)
+            MainContainerScreen(navController)
         }
 
         composable<Routes.CommunitiesScreen> {
-            CommunitiesScreen(navController)
+            MainContainerScreen(navController)
         }
         composable<Routes.CallsScreen> {
-            CallScreen(navController)
+            MainContainerScreen(navController)
+        }
+        
+        composable<Routes.ReelScreen> {
+            MainContainerScreen(navController)
+        }
+        
+        composable<Routes.MainContainerScreen> {
+            MainContainerScreen(navController)
         }
 
 
@@ -78,10 +86,6 @@ fun WatsAppNavigationSystem(){
 
         composable<Routes.EmailAddressScreen> {
             com.example.gupshup.presentation.settings.EmailAddressScreen(navController = navController)
-        }
-
-        composable<Routes.ReelScreen> {
-            com.example.gupshup.presentation.reelscreen.ReelScreen(navHostController = navController)
         }
 
         composable<Routes.ChatThemeScreen> {

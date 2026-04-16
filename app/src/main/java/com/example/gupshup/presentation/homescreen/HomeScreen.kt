@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,9 +46,7 @@ import com.example.gupshup.presentation.viewmodels.BaseViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-
-fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseViewModel) {
-
+fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseViewModel, outerPadding: PaddingValues = PaddingValues(0.dp)) {
     var showPopup by remember {
         mutableStateOf(false)
     }
@@ -111,7 +110,9 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                 },
                 containerColor = colorResource(id = R.color.Royal_Blue),
                 contentColor = Color.White,
-                modifier = Modifier.size(65.dp)
+                modifier = Modifier
+                    .padding(bottom = outerPadding.calculateBottomPadding())
+                    .size(65.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_chat_icon),
@@ -120,37 +121,12 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                     tint = Color.White
                 )
             }
-        },
-        bottomBar = {
-            BottomNavigation(
-                navHostController,
-                selectedItem = 0,
-                unSelectedItem = Color.Gray,
-                onClick = { index ->
-                    when (index) {
-                        0 -> {
-                            // Already on HomeScreen
-                        }
-                        1 -> {
-                            navHostController.navigate(Routes.UpdateScreen)
-                        }
-                        2 -> {
-                            navHostController.navigate(Routes.ReelScreen)
-                        }
-                        3 -> {
-                            navHostController.navigate(Routes.CommunitiesScreen)
-                        }
-                        4 -> {
-                            navHostController.navigate(Routes.CallsScreen)
-                        }
-                    }
-                }
-            )
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .padding(bottom = outerPadding.calculateBottomPadding())
                 .background(color = Color.White)
         ) {
             Spacer(modifier = Modifier.height(12.dp))

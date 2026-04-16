@@ -1,5 +1,6 @@
 package com.example.gupshup.presentation.updatescreen
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,7 @@ import com.example.gupshup.presentation.updatescreen.TopBar
 
 
 @Composable
-fun UpdateScreen(navHostController: NavHostController) {
+fun UpdateScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
 
     val scrollState = rememberScrollState()
 
@@ -83,7 +84,9 @@ fun UpdateScreen(navHostController: NavHostController) {
             FloatingActionButton(
                 onClick = { /*TODO*/ },
                 containerColor = colorResource(id = R.color.Royal_Blue),
-                modifier = Modifier.size(65.dp),
+                modifier = Modifier
+                    .padding(bottom = outerPadding.calculateBottomPadding())
+                    .size(65.dp),
                 contentColor = Color.White
             ) {
                 Icon(
@@ -92,37 +95,12 @@ fun UpdateScreen(navHostController: NavHostController) {
                     modifier = Modifier.size(30.dp)
                 )
             }
-        },
-        bottomBar = {
-            BottomNavigation(
-                navHostController,
-                selectedItem = 1,
-                unSelectedItem = Color.Gray,
-                onClick = { index ->
-                    when (index) {
-                        0 -> {
-                            navHostController.navigate(Routes.HomeScreen)
-                        }
-                        1 -> {
-                            // Already on UpdateScreen
-                        }
-                        2 -> {
-                            navHostController.navigate(Routes.ReelScreen)
-                        }
-                        3 -> {
-                            navHostController.navigate(Routes.CommunitiesScreen)
-                        }
-                        4 -> {
-                            navHostController.navigate(Routes.CallsScreen)
-                        }
-                    }
-                }
-            )
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .padding(bottom = outerPadding.calculateBottomPadding())
                 .fillMaxWidth()
         ) {
             Column(

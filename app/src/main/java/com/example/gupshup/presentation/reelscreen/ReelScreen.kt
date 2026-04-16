@@ -1,5 +1,6 @@
 package com.example.gupshup.presentation.reelscreen
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.gupshup.presentation.bottomnavigation.BottomNavigation
@@ -18,7 +20,7 @@ import com.example.gupshup.presentation.navigation.Routes
 import com.example.gupshup.presentation.updatescreen.TopBar
 
 @Composable
-fun ReelScreen(navHostController: NavHostController) {
+fun ReelScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
     Scaffold(
         topBar = {
             TopBar(
@@ -28,27 +30,12 @@ fun ReelScreen(navHostController: NavHostController) {
                 showSearch = false,
                 showMenu = false
             )
-        },
-        bottomBar = {
-            BottomNavigation(
-                navHostController,
-                selectedItem = 2,
-                unSelectedItem = Color.Gray,
-                onClick = { index ->
-                    when (index) {
-                        0 -> navHostController.navigate(Routes.HomeScreen)
-                        1 -> navHostController.navigate(Routes.UpdateScreen)
-                        2 -> { /* Already on ReelScreen */ }
-                        3 -> navHostController.navigate(Routes.CommunitiesScreen)
-                        4 -> navHostController.navigate(Routes.CallsScreen)
-                    }
-                }
-            )
         }
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
+                .padding(bottom = outerPadding.calculateBottomPadding())
                 .fillMaxSize()
         ) {
             Box(

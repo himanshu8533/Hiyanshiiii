@@ -1,5 +1,6 @@
 package com.example.gupshup.presentation.callscreen
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,7 @@ import com.example.gupshup.presentation.navigation.Routes
 import com.example.gupshup.presentation.updatescreen.TopBar
 
 @Composable
-fun CallScreen(navHostController: NavHostController) {
+fun CallScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
 
     val sampleCall= listOf(
         Call(image = R.drawable.dipika_rohila, name = "Dipika Rohila", time = "Yesterday, 8:30 PM", isMissed = true),
@@ -48,37 +49,13 @@ fun CallScreen(navHostController: NavHostController) {
                 showCamera = false
             )
         },
-        bottomBar = {
-            BottomNavigation(
-                navHostController,
-                selectedItem = 4,
-                unSelectedItem = Color.Gray,
-                onClick = { index ->
-                    when (index) {
-                        0 -> {
-                            navHostController.navigate(Routes.HomeScreen)
-                        }
-                        1 -> {
-                            navHostController.navigate(Routes.UpdateScreen)
-                        }
-                        2 -> {
-                            navHostController.navigate(Routes.ReelScreen)
-                        }
-                        3 -> {
-                            navHostController.navigate(Routes.CommunitiesScreen)
-                        }
-                        4 -> {
-                            // Already on CallsScreen
-                        }
-                    }
-                }
-            )
-        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { /*TODO*/ },
                 containerColor = colorResource(id = R.color.Royal_Blue),
-                modifier = Modifier.size(65.dp),
+                modifier = Modifier
+                    .padding(bottom = outerPadding.calculateBottomPadding())
+                    .size(65.dp),
                 contentColor = Color.White
             ) {
                 Icon(
@@ -89,7 +66,10 @@ fun CallScreen(navHostController: NavHostController) {
             }
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(modifier = Modifier
+            .padding(paddingValues)
+            .padding(bottom = outerPadding.calculateBottomPadding())
+        ) {
             Spacer(modifier = Modifier.height(5.dp))
 
             FavouriteSection()
