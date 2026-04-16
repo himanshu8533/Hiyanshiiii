@@ -5,7 +5,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.gupshup.presentation.callscreen.CallScreen
+import com.example.gupshup.presentation.chatscreen.ChatScreen
 import com.example.gupshup.presentation.communitiesscreen.CommunitiesScreen
 import com.example.gupshup.presentation.homescreen.HomeScreen
 import com.example.gupshup.presentation.maincontainer.MainContainerScreen
@@ -90,6 +92,11 @@ fun WatsAppNavigationSystem(){
 
         composable<Routes.ChatThemeScreen> {
             com.example.gupshup.presentation.settings.ChatThemeScreen(navController = navController)
+        }
+
+        composable<Routes.ChatScreen> { backStackEntry ->
+            val route: Routes.ChatScreen = backStackEntry.toRoute()
+            ChatScreen(navController = navController, phoneNumber = route.phoneNumber)
         }
 
 

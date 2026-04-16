@@ -142,13 +142,33 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                     baseViewModel = homeBaseViewModel
                 )
             }
+            val dummyGupShupChat = ChatListModel(
+                name = "GupShup",
+                phoneNumber = "Official",
+                message = "Hey! How's your experience.",
+                time = "10:01 AM"
+            )
+
             LazyColumn {
+                item {
+                    ChatListBox(
+                        chatListModel = dummyGupShupChat,
+                        onClick = {
+                            navHostController.navigate(
+                                Routes.ChatScreen(
+                                    phoneNumber = dummyGupShupChat.phoneNumber ?: "Official"
+                                )
+                            )
+                        },
+                        baseViewModel = homeBaseViewModel
+                    )
+                }
                 items(chatData) { chat ->
                     ChatListBox(
                         chatListModel = chat,
                         onClick = {
                             navHostController.navigate(
-                                Routes.ChatScreen.createRoutes(
+                                Routes.ChatScreen(
                                     phoneNumber = chat.phoneNumber ?: "Ok"
                                 )
                             )

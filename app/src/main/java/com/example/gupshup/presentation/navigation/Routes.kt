@@ -47,10 +47,7 @@ Routes  {
     data object EmailAddressScreen : Routes()
 
     @Serializable
-    data object ChatScreen : Routes(){
-        const val route ="chat_screen/{phoneNumber}"
-        fun createRoutes(phoneNumber: String) = "chat_screen/$phoneNumber"
-    }
+    data class ChatScreen(val phoneNumber: String) : Routes()
 
     @Serializable
     data object ReelScreen : Routes()
