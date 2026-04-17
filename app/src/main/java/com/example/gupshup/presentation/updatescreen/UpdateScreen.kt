@@ -1,5 +1,10 @@
 package com.example.gupshup.presentation.updatescreen
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,11 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
 import com.example.gupshup.presentation.bottomnavigation.BottomNavigation
@@ -33,6 +40,36 @@ import com.example.gupshup.presentation.updatescreen.TopBar
 fun UpdateScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
 
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                Toast.makeText(context, "Image selected from gallery!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap ->
+            if (bitmap != null) {
+                Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                cameraLauncher.launch(null)
+            } else {
+                Toast.makeText(context, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
 
     val sampleStatus = listOf(
         StatusData(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "10 min ago"),
@@ -77,12 +114,17 @@ fun UpdateScreen(navHostController: NavHostController, outerPadding: PaddingValu
             TopBar(
                 title = "Updates",
                 onSettingsClick = { navHostController.navigate(Routes.SettingsScreen) },
-                showCamera = false
+                showCamera = true,
+                onCameraClick = {
+                    galleryLauncher.launch("image/*")
+                }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    galleryLauncher.launch("image/*")
+                },
                 containerColor = colorResource(id = R.color.Royal_Blue),
                 modifier = Modifier
                     .padding(bottom = outerPadding.calculateBottomPadding())

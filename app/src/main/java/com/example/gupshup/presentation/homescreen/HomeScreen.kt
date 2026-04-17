@@ -1,6 +1,10 @@
 package com.example.gupshup.presentation.homescreen
 
-import androidx.compose.foundation.background
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +35,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
 import com.example.gupshup.presentation.bottomnavigation.BottomNavigation
@@ -50,6 +56,36 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
     var showPopup by remember {
         mutableStateOf(false)
     }
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                Toast.makeText(context, "Image selected from gallery!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap ->
+            if (bitmap != null) {
+                Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                cameraLauncher.launch(null)
+            } else {
+                Toast.makeText(context, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
 
     val chatData by homeBaseViewModel.chatList.collectAsState()
 
@@ -67,6 +103,9 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                 title = "GupShup",
                 titleColor = colorResource(id = R.color.Royal_Blue),
                 onSettingsClick = { navHostController.navigate(Routes.SettingsScreen) },
+                onCameraClick = {
+                    galleryLauncher.launch("image/*")
+                },
                 menuOptions = { onDismiss ->
                     DropdownMenuItem(
                         text = { Text("New group") },

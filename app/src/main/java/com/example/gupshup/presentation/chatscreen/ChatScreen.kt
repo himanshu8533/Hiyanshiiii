@@ -1,5 +1,10 @@
 package com.example.gupshup.presentation.chatscreen
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
 
@@ -38,7 +46,37 @@ data class DummyMessage(
 @Composable
 fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     var messageText by remember { mutableStateOf("") }
-    
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                Toast.makeText(context, "Image selected from gallery!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap ->
+            if (bitmap != null) {
+                Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                cameraLauncher.launch(null)
+            } else {
+                Toast.makeText(context, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
     val dummyMessages = listOf(
         DummyMessage("Hey! I'm using the gupshup.", false, "10:00 AM"),
         DummyMessage("Hey! How's your experience.", true, "10:01 AM"),
@@ -64,7 +102,7 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Column {
                             Text(
-                                text = "GupShup",
+                                text = phoneNumber,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -104,7 +142,10 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
             ChatInputBar(
                 text = messageText,
                 onValueChange = { messageText = it },
-                onSend = { messageText = "" }
+                onSend = { messageText = "" },
+                onCameraClick = {
+                    galleryLauncher.launch("image/*")
+                }
             )
         }
     ) { paddingValues ->
@@ -135,7 +176,8 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
 fun ChatInputBar(
     text: String,
     onValueChange: (String) -> Unit,
-    onSend: () -> Unit
+    onSend: () -> Unit,
+    onCameraClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -174,6 +216,9 @@ fun ChatInputBar(
                 )
                 IconButton(onClick = {}) {
                     Icon(Icons.Default.Add, contentDescription = "Attach", tint = Color.Gray)
+                }
+                IconButton(onClick = onCameraClick) {
+                    Icon(Icons.Default.CameraAlt, contentDescription = "Camera", tint = Color.Gray)
                 }
             }
         }
