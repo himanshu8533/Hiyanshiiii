@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -24,6 +25,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -56,6 +58,7 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
     var showPopup by remember {
         mutableStateOf(false)
     }
+    var showImageSourceDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val galleryLauncher = rememberLauncherForActivityResult(
@@ -87,6 +90,35 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
         }
     )
 
+    if (showImageSourceDialog) {
+        AlertDialog(
+            onDismissRequest = { showImageSourceDialog = false },
+            title = { Text("Select Image Source") },
+            text = { Text("Choose between Camera and Gallery") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showImageSourceDialog = false
+                    val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                        cameraLauncher.launch(null)
+                    } else {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                }) {
+                    Text("Camera")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showImageSourceDialog = false
+                    galleryLauncher.launch("image/*")
+                }) {
+                    Text("Gallery")
+                }
+            }
+        )
+    }
+
     val chatData by homeBaseViewModel.chatList.collectAsState()
 
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -104,7 +136,7 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                 titleColor = colorResource(id = R.color.Royal_Blue),
                 onSettingsClick = { navHostController.navigate(Routes.SettingsScreen) },
                 onCameraClick = {
-                    galleryLauncher.launch("image/*")
+                    showImageSourceDialog = true
                 },
                 menuOptions = { onDismiss ->
                     DropdownMenuItem(
@@ -183,7 +215,7 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
             }
             val dummyGupShupChat = ChatListModel(
                 name = "GupShup",
-                phoneNumber = "Official",
+                phoneNumber = "Gupshup",
                 message = "Thank you so much! For the appreciation.",
                 time = "10:05 AM"
             )

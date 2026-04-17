@@ -47,6 +47,7 @@ data class DummyMessage(
 fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     var messageText by remember { mutableStateOf("") }
     val context = LocalContext.current
+    var showImageSourceDialog by remember { mutableStateOf(false) }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -76,6 +77,35 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
             }
         }
     )
+
+    if (showImageSourceDialog) {
+        AlertDialog(
+            onDismissRequest = { showImageSourceDialog = false },
+            title = { Text("Select Image Source") },
+            text = { Text("Choose between Camera and Gallery") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showImageSourceDialog = false
+                    val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                        cameraLauncher.launch(null)
+                    } else {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                }) {
+                    Text("Camera")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showImageSourceDialog = false
+                    galleryLauncher.launch("image/*")
+                }) {
+                    Text("Gallery")
+                }
+            }
+        )
+    }
 
     val dummyMessages = listOf(
         DummyMessage("Hey! I'm using the gupshup.", false, "10:00 AM"),
@@ -144,7 +174,7 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                 onValueChange = { messageText = it },
                 onSend = { messageText = "" },
                 onCameraClick = {
-                    galleryLauncher.launch("image/*")
+                    showImageSourceDialog = true
                 }
             )
         }
