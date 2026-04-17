@@ -41,7 +41,7 @@ fun MyStatus() {
         Box {
 
             Image(
-                painter = painterResource(id = R.drawable.whatsapp_icon),
+                painter = painterResource(id = R.drawable.user_placeholder),
                 contentDescription = null,
                 modifier = Modifier
                     .size(60.dp)

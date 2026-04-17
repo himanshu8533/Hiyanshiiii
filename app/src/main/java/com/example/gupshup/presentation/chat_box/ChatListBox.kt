@@ -60,7 +60,7 @@ fun ChatListBox(
             },
             contentDescription = null,
             modifier = Modifier
-                .size(60.dp)
+                .size(50.dp)
                 .background(color = Color.Gray)
                 .clip(shape = CircleShape), contentScale = ContentScale.Crop
         )

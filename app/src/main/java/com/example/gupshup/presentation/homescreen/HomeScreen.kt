@@ -186,7 +186,7 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                     .size(65.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.add_chat_icon),
+                    painter = painterResource(R.drawable.chat),
                     contentDescription = null,
                     modifier = Modifier.size(28.dp),
                     tint = Color.White

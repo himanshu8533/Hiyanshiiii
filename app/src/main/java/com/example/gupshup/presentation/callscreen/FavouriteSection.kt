@@ -27,6 +27,9 @@ fun FavouriteSection() {
         FavouriteContacts(image = R.drawable.dipika_rohila, name = "Dipika"),
         FavouriteContacts(image = R.drawable.himanshu, name = "Himanshu"),
         FavouriteContacts(image = R.drawable.prakhar, name = "Prakhar"),
+        FavouriteContacts(image = R.drawable.dipika_rohila, name = "Dipika"),
+        FavouriteContacts(image = R.drawable.himanshu, name = "Himanshu"),
+        FavouriteContacts(image = R.drawable.prakhar, name = "Prakhar"),
 
         )
 

@@ -57,7 +57,7 @@ fun CallItemDesign(call: Call) {
             Row {
 
                 Icon(
-                    painter = painterResource(R.drawable.more),
+                    painter = painterResource(R.drawable.arrow),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
                     tint = if (call.isMissed) Color.Red else colorResource(R.color.light_green)
@@ -74,7 +74,7 @@ fun CallItemDesign(call: Call) {
             IconButton(onClick = {}, modifier = Modifier.align(Alignment.CenterEnd)) {
 
                 Icon(
-                    painter = painterResource(R.drawable.message_m),
+                    painter = painterResource(R.drawable.phone),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

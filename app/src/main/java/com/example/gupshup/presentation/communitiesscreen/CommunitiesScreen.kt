@@ -29,7 +29,15 @@ import com.example.gupshup.presentation.updatescreen.TopBar
 fun CommunitiesScreen(navHostController: NavHostController, outerPadding: PaddingValues = PaddingValues(0.dp)) {
 
     val sampleCommunities = listOf(
-        Communities(image = R.drawable.dipika_rohila, name = "Dipika Rohila", memberCount = "256 members")
+        Communities(image = R.drawable.dipika_rohila, name = "Dipika Rohila", memberCount = "256 members"),
+        Communities(image = R.drawable.himanshu, name = "Himanshu Kumar", memberCount = "200 members"),
+        Communities(image = R.drawable.prakhar, name = "Prakhar Goyal", memberCount = "250 members"),
+        Communities(image = R.drawable.dipika_rohila, name = "Dipika Rohila", memberCount = "257 members"),
+        Communities(image = R.drawable.himanshu, name = "Himanshu Kumar", memberCount = "243 members"),
+        Communities(image = R.drawable.prakhar, name = "Prakhar Goyal", memberCount = "272 members"),
+        Communities(image = R.drawable.dipika_rohila, name = "Dipika Rohila", memberCount = "208 members"),
+        Communities(image = R.drawable.himanshu, name = "Himanshu Kumar", memberCount = "250 members"),
+        Communities(image = R.drawable.prakhar, name = "Prakhar Goyal", memberCount = "298 members")
 
 
     )

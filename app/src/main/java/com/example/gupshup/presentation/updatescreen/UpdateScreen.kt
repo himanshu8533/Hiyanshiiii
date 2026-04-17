@@ -109,36 +109,35 @@ fun UpdateScreen(navHostController: NavHostController, outerPadding: PaddingValu
 
     val sampleStatus = listOf(
         StatusData(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "10 min ago"),
-        StatusData(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "10 min ago"),
-        StatusData(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "10 min ago"),
-        StatusData(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "10 min ago")
+        StatusData(image = R.drawable.dipika_rohila, name = "Dipika Rohila", time = "15 min ago"),
+        StatusData(image = R.drawable.prakhar, name = "Prakhar Goyal", time = "5 min ago"),
 
     )
 
     val sampleChannel = listOf(
 
         Channel(
-            image = R.drawable.whatsapp_icon,
+            image = R.drawable.user_placeholder,
             name = "Neet Roots",
             description = "Latest news in tech"
         ),
         Channel(
-            image = R.drawable.whatsapp_icon,
+            image = R.drawable.user_placeholder,
             name = "Food Lover",
             description = "Latest news in tech"
         ),
         Channel(
-            image = R.drawable.whatsapp_icon,
+            image = R.drawable.user_placeholder,
             name = "Image Recognition",
             description = "Latest news in tech"
         ),
         Channel(
-            image = R.drawable.whatsapp_icon,
+            image = R.drawable.user_placeholder,
             name = "Change Background",
             description = "Latest news in tech"
         ),
         Channel(
-            image = R.drawable.whatsapp_icon,
+            image = R.drawable.user_placeholder,
             name = "Rotation",
             description = "Latest news in tech"
         ),

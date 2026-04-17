@@ -39,6 +39,9 @@ fun CallScreen(navHostController: NavHostController, outerPadding: PaddingValues
         Call(image = R.drawable.dipika_rohila, name = "Dipika Rohila", time = "Yesterday, 8:30 PM", isMissed = true),
         Call(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "Today, 10:00 AM", isMissed = false),
         Call(image = R.drawable.prakhar, name = "Prakhar Goyal", time = "Nov, 8:32 AM", isMissed = true),
+        Call(image = R.drawable.dipika_rohila, name = "Dipika Rohila", time = "Yesterday, 8:30 PM", isMissed = true),
+        Call(image = R.drawable.himanshu, name = "Himanshu Kumar", time = "Today, 10:00 AM", isMissed = false),
+        Call(image = R.drawable.prakhar, name = "Prakhar Goyal", time = "Nov, 8:32 AM", isMissed = true),
     )
 
     Scaffold(
@@ -59,7 +62,7 @@ fun CallScreen(navHostController: NavHostController, outerPadding: PaddingValues
                 contentColor = Color.White
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.camera222),
+                    painter = painterResource(id = R.drawable.phone),
                     contentDescription = null,
                     modifier = Modifier.size(30.dp)
                 )
