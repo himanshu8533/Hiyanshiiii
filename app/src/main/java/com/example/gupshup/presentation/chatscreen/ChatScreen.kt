@@ -125,7 +125,7 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                             painter = painterResource(id = R.drawable.logo),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(80.dp)
                                 .clip(CircleShape),
                             contentScale = ContentScale.Crop
                         )
