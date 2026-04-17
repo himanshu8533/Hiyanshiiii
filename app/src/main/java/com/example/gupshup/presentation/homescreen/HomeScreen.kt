@@ -145,8 +145,8 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
             val dummyGupShupChat = ChatListModel(
                 name = "GupShup",
                 phoneNumber = "Official",
-                message = "Hey! How's your experience.",
-                time = "10:01 AM"
+                message = "Thank you so much! For the appreciation.",
+                time = "10:05 AM"
             )
 
             LazyColumn {

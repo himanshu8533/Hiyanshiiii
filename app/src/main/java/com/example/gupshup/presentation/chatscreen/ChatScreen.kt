@@ -41,7 +41,11 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     
     val dummyMessages = listOf(
         DummyMessage("Hey! I'm using the gupshup.", false, "10:00 AM"),
-        DummyMessage("Hey! How's your experience.", true, "10:01 AM")
+        DummyMessage("Hey! How's your experience.", true, "10:01 AM"),
+        DummyMessage("This was a good experience for me.", false, "10:03 AM"),
+        DummyMessage("I'm glad to hear that.", true, "10:04 AM"),
+        DummyMessage("This is very easy to use and wonderful application.", false, "10:04 AM"),
+        DummyMessage("Thank you so much! For the appreciation.", true, "10:05 AM")
     )
 
     Scaffold(
