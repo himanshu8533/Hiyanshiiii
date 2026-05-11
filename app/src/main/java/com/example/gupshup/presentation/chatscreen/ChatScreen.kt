@@ -54,6 +54,8 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     var messageText by remember { mutableStateOf("") }
     val context = LocalContext.current
     var showImageSourceDialog by remember { mutableStateOf(false) }
+    var showVideoCallDialog by remember { mutableStateOf(false) }
+    var showAudioCallDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     val initialMessages = remember(phoneNumber) {
@@ -126,6 +128,32 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
             }
         }
     )
+
+    if (showVideoCallDialog) {
+        AlertDialog(
+            onDismissRequest = { showVideoCallDialog = false },
+            title = { Text("Video Call") },
+            text = { Text("Calling $phoneNumber...") },
+            confirmButton = {
+                TextButton(onClick = { showVideoCallDialog = false }) {
+                    Text("End Call", color = Color.Red)
+                }
+            }
+        )
+    }
+
+    if (showAudioCallDialog) {
+        AlertDialog(
+            onDismissRequest = { showAudioCallDialog = false },
+            title = { Text("Audio Call") },
+            text = { Text("Calling $phoneNumber...") },
+            confirmButton = {
+                TextButton(onClick = { showAudioCallDialog = false }) {
+                    Text("End Call", color = Color.Red)
+                }
+            }
+        )
+    }
 
     if (showImageSourceDialog) {
         AlertDialog(
@@ -203,14 +231,14 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { showVideoCallDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Videocam,
                             contentDescription = "Video Call",
                             tint = Color.White
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { showAudioCallDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Call,
                             contentDescription = "Audio Call",

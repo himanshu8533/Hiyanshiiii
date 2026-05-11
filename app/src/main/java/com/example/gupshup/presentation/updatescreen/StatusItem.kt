@@ -2,6 +2,7 @@ package com.example.gupshup.presentation.updatescreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,11 +30,12 @@ import androidx.compose.ui.unit.sp
 import com.example.gupshup.R
 
 @Composable
-fun MyStatus() {
+fun MyStatus(onClick: () -> Unit = {}) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

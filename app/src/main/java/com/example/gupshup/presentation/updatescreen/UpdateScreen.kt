@@ -193,7 +193,9 @@ fun UpdateScreen(navHostController: NavHostController, outerPadding: PaddingValu
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                 )
 
-                MyStatus()
+                MyStatus(onClick = {
+                    showImageSourceDialog = true
+                })
 
                 sampleStatus.forEach { data ->
                     StatusItem(statusData = data)
