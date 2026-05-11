@@ -223,25 +223,28 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                 ChatListModel(
                     name = "Alice",
                     phoneNumber = "9876543210",
-                    message = "Hii",
+                    message = "See you tomorrow!",
                     time = "09:45 AM"
                 ),
                 ChatListModel(
+
+
+
                     name = "Project Group",
                     phoneNumber = "Group",
-                    message = "Hii",
+                    message = "The report is ready.",
                     time = "Yesterday"
                 ),
                 ChatListModel(
                     name = "Bob",
                     phoneNumber = "1234567890",
-                    message = "Hii",
+                    message = "Call me when you're free.",
                     time = "Monday"
                 ),
                 ChatListModel(
                     name = "Charlie",
                     phoneNumber = "5551234567",
-                    message = "Hii",
+                    message = "Check out this link!",
                     time = "12:30 PM"
                 )
             )

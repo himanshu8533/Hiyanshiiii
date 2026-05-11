@@ -56,11 +56,46 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     var showImageSourceDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    val messages = remember {
-        mutableStateListOf(
-            DummyMessage("Hii", false, "10:05 AM"),
+    val initialMessages = remember(phoneNumber) {
+        when (phoneNumber) {
+            "someone" -> listOf(
+                DummyMessage("Hii", false, "10:00 AM"),
 
-        )
+            )
+            "9876543210" -> listOf(
+                DummyMessage("Hey Alice!", true, "09:00 AM"),
+                DummyMessage("Hi! Are we meeting today?", false, "09:15 AM"),
+                DummyMessage("Yes, at 5 PM.", true, "09:20 AM"),
+                DummyMessage("See you tomorrow!", false, "09:45 AM")
+            )
+            "Group" -> listOf(
+                DummyMessage("Project update?", false, "Yesterday"),
+                DummyMessage("Almost done with the UI.", true, "Yesterday"),
+                DummyMessage("Great. Send the report.", false, "Yesterday"),
+                DummyMessage("The report is ready.", true, "08:00 AM")
+            )
+            "1234567890" -> listOf(
+                DummyMessage("Yo Bob!", true, "Monday"),
+                DummyMessage("Hey man, what's up?", false, "Monday"),
+                DummyMessage("Not much, just working.", true, "Monday"),
+                DummyMessage("Call me when you're free.", false, "Monday")
+            )
+            "5551234567" -> listOf(
+                DummyMessage("Hey Charlie, did you see the link?", true, "12:00 PM"),
+                DummyMessage("Just checking it now.", false, "12:15 PM"),
+                DummyMessage("Check out this link!", false, "12:30 PM")
+            )
+            else -> listOf(
+                DummyMessage("Hello!", false, "Recently"),
+                DummyMessage("This is a new chat.", true, "Just now")
+            )
+        }
+    }
+
+    val messages = remember(phoneNumber) {
+        mutableStateListOf<DummyMessage>().apply {
+            addAll(initialMessages)
+        }
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(
@@ -136,8 +171,16 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Column {
+                            val displayName = when(phoneNumber) {
+                                "someone" -> "someone"
+                                "9876543210" -> "Alice"
+                                "Group" -> "Project Group"
+                                "1234567890" -> "Bob"
+                                "5551234567" -> "Charlie"
+                                else -> phoneNumber
+                            }
                             Text(
-                                text = if (phoneNumber == "Gupshup" || phoneNumber == "someone") "someone" else phoneNumber,
+                                text = displayName,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
