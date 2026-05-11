@@ -213,21 +213,47 @@ fun HomeScreen(navHostController: NavHostController, homeBaseViewModel: BaseView
                     baseViewModel = homeBaseViewModel
                 )
             }
-            val dummyGupShupChat = ChatListModel(
-                name = "GupShup",
-                phoneNumber = "Gupshup",
-                message = "Thank you so much! For the appreciation.",
-                time = "10:05 AM"
+            val dummyChats = listOf(
+                ChatListModel(
+                    name = "someone",
+                    phoneNumber = "someone",
+                    message = "Hii",
+                    time = "10:05 AM"
+                ),
+                ChatListModel(
+                    name = "Alice",
+                    phoneNumber = "9876543210",
+                    message = "Hii",
+                    time = "09:45 AM"
+                ),
+                ChatListModel(
+                    name = "Project Group",
+                    phoneNumber = "Group",
+                    message = "Hii",
+                    time = "Yesterday"
+                ),
+                ChatListModel(
+                    name = "Bob",
+                    phoneNumber = "1234567890",
+                    message = "Hii",
+                    time = "Monday"
+                ),
+                ChatListModel(
+                    name = "Charlie",
+                    phoneNumber = "5551234567",
+                    message = "Hii",
+                    time = "12:30 PM"
+                )
             )
 
             LazyColumn {
-                item {
+                items(dummyChats) { chat ->
                     ChatListBox(
-                        chatListModel = dummyGupShupChat,
+                        chatListModel = chat,
                         onClick = {
                             navHostController.navigate(
                                 Routes.ChatScreen(
-                                    phoneNumber = dummyGupShupChat.phoneNumber ?: "Official"
+                                    phoneNumber = chat.phoneNumber ?: "Ok"
                                 )
                             )
                         },

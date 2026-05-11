@@ -16,9 +16,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,6 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.gupshup.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 data class DummyMessage(
     val text: String,
@@ -48,6 +54,14 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
     var messageText by remember { mutableStateOf("") }
     val context = LocalContext.current
     var showImageSourceDialog by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    val messages = remember {
+        mutableStateListOf(
+            DummyMessage("Hii", false, "10:05 AM"),
+
+        )
+    }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -107,15 +121,6 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
         )
     }
 
-    val dummyMessages = listOf(
-        DummyMessage("Hey! I'm using the gupshup.", false, "10:00 AM"),
-        DummyMessage("Hey! How's your experience.", true, "10:01 AM"),
-        DummyMessage("This was a good experience for me.", false, "10:03 AM"),
-        DummyMessage("I'm glad to hear that.", true, "10:04 AM"),
-        DummyMessage("This is very easy to use and wonderful application.", false, "10:04 AM"),
-        DummyMessage("Thank you so much! For the appreciation.", true, "10:05 AM")
-    )
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -132,7 +137,7 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Column {
                             Text(
-                                text = phoneNumber,
+                                text = if (phoneNumber == "Gupshup" || phoneNumber == "someone") "someone" else phoneNumber,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -157,8 +162,15 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                 actions = {
                     IconButton(onClick = { }) {
                         Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "More",
+                            imageVector = Icons.Default.Videocam,
+                            contentDescription = "Video Call",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Default.Call,
+                            contentDescription = "Audio Call",
                             tint = Color.White
                         )
                     }
@@ -172,7 +184,34 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
             ChatInputBar(
                 text = messageText,
                 onValueChange = { messageText = it },
-                onSend = { messageText = "" },
+                onSend = {
+                    if (messageText.isNotBlank()) {
+                        val userMessage = messageText
+                        val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+                        messages.add(DummyMessage(userMessage, true, currentTime))
+                        messageText = ""
+
+                        if (phoneNumber == "Gupshup" || phoneNumber == "someone") {
+                            scope.launch {
+                                delay(1000)
+                                val aiReply = when {
+                                    userMessage.lowercase().contains("hii") || userMessage.lowercase().contains("hi") || userMessage.lowercase().contains("hello") -> "Hii! How are you?"
+                                    userMessage.lowercase().contains("how are you") -> "I'm doing great! How can I help you today?"
+                                    userMessage.lowercase().contains("help") -> "Sure! I can help you with app navigation, settings, or just have a chat. What do you need?"
+                                    userMessage.lowercase().contains("feature") -> "GupShup has many features: real-time messaging, AI assistance, image sharing, and soon video/audio calls!"
+                                    userMessage.lowercase().contains("profile") || userMessage.lowercase().contains("picture") -> "To change your profile picture, go to Settings and tap on your current profile image."
+                                    userMessage.lowercase().contains("name") -> "I am 'someone', your AI assistant here to make your experience wonderful!"
+                                    userMessage.lowercase().contains("thank") -> "You're very welcome! Is there anything else you'd like to know?"
+                                    userMessage.lowercase().contains("bye") || userMessage.lowercase().contains("goodbye") -> "Goodbye! Have a great day ahead!"
+                                    userMessage.lowercase().contains("joke") -> "Why don't scientists trust atoms? Because they make up everything!"
+                                    else -> "That's interesting! Tell me more about that or ask me something else."
+                                }
+                                val replyTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+                                messages.add(DummyMessage(aiReply, false, replyTime))
+                            }
+                        }
+                    }
+                },
                 onCameraClick = {
                     showImageSourceDialog = true
                 }
@@ -193,7 +232,7 @@ fun ChatScreen(navController: NavHostController, phoneNumber: String) {
                 reverseLayout = false
             ) {
                 item { Spacer(modifier = Modifier.height(12.dp)) }
-                items(dummyMessages) { message ->
+                items(messages) { message ->
                     ChatBubble(message)
                 }
                 item { Spacer(modifier = Modifier.height(12.dp)) }
